@@ -117,94 +117,94 @@
   <script>
     // --------- Story data (from your JSON) ----------
     const story = {
-      "start": {
-          "text": "👀 *6:59 PM.* Everyone has left. You’re about to shut down your PC when an email pops up:\\n*From:* unknown@officecorp.com\\n*Subject:* Do you want to play?",
-          "choices": [
-              {"text": "Open the email 📧", "next": "open_email"},
-              {"text": "Ignore it 🙈", "next": "ignore_email"}
-          ]
-      },
-      "open_email": {
-          "text": "📩 The message reads: ‘We know you stayed late. Let’s play a game. Find the red folder.’\\nYou hear faint footsteps...",
-          "choices": [
-              {"text": "Search your desk 🗄️", "next": "search_desk"},
-              {"text": "Check the hallway 🚶", "next": "search_hallway"}
-          ]
-      },
-      "ignore_email": {
-          "text": "⚡ The lights flicker. Another message arrives: ‘You can’t hide from me.’",
-          "choices": [
-              {"text": "Go check the email 📧", "next": "open_email"},
-              {"text": "Hide under your desk 🪑", "next": "hide_desk"}
-          ]
-      },
-      "search_desk": {
-          "text": "You find the red folder. It contains a note: *‘The clock strikes 10, or you won’t leave alive.’* ⏰",
-          "choices": [
-              {"text": "Head to the break room 🍵", "next": "break_room"},
-              {"text": "Try the exit door 🚪", "next": "exit_door"}
-          ]
-      },
-      "search_hallway": {
-          "text": "The hallway is empty, but the lights flicker. You see a shadow move past the conference room...",
-          "choices": [
-              {"text": "Follow the shadow 👤", "next": "conference_room"},
-              {"text": "Go back to desk 🖥️", "next": "search_desk"}
-          ]
-      },
-      "hide_desk": {
-          "text": "You crouch and hear typing above. The printer starts printing a single page: *‘Stand up.’* 🖨️",
-          "choices": [
-              {"text": "Stand up 🧍", "next": "search_desk"},
-              {"text": "Stay hidden 🫣", "next": "stay_hidden"}
-          ]
-      },
-      "break_room": {
-          "text": "On the counter: 3 cups. One has a key under it. ☕❓",
-          "choices": [
-              {"text": "Pick left cup 🟢", "next": "key_left"},
-              {"text": "Pick middle cup 🟡", "next": "key_middle"},
-              {"text": "Pick right cup 🔴", "next": "key_right"}
-          ]
-      },
-      "exit_door": {
-          "text": "The door is locked. Your reflection in the glass waves without you moving. 😳",
-          "choices": [
-              {"text": "Look for a key 🗝️", "next": "break_room"},
-              {"text": "Try another exit 🏃", "next": "other_exit"}
-          ]
-        },
-      "conference_room": {
-          "text": "Shadow was just a jacket hanging. Relief… until a drawer opens by itself. 😬",
-          "choices": [
-              {"text": "Open drawer 🗄️", "next": "key_middle"},
-              {"text": "Ignore it 🙅", "next": "other_exit"}
-          ]
-      },
-      "stay_hidden": {
-          "text": "You hear a whisper: *‘Time’s running out.’* ⏱️",
-          "choices": [
-              {"text": "Crawl to hallway 🐛", "next": "conference_room"},
-              {"text": "Peek at desk 👀", "next": "search_desk"}
-          ]
-      },
-      "key_left": {
-          "text": "✅ You found the key! You unlock the exit and leave safely. 🎉",
-          "choices": []
-      },
-      "key_middle": {
-          "text": "❌ Nothing inside. Lights flicker. Time seems frozen. 😨",
-          "choices": []
-      },
-      "key_right": {
-          "text": "❌ The cup has candy 🍬 but no key. Clock ticks closer to 10 PM...",
-          "choices": []
-      },
-      "other_exit": {
-          "text": "✅ You find an emergency stairwell and escape! 🏃‍♂️💨",
-          "choices": []
-      }
-    };
+  "start": {
+    "text": "👀 *6:59 PM.* Everyone’s gone. The hum of the lights feels louder than usual. You’re about to shut down your PC when an email pops up:\n*From:* unknown@officecorp.com\n*Subject:* Do you want to play?",
+    "choices": [
+      {"text": "Open the email 📧", "next": "open_email"},
+      {"text": "Ignore it 🙈", "next": "ignore_email"}
+    ]
+  },
+  "open_email": {
+    "text": "📩 The email simply says: *‘We know you stayed late. Let’s play a game. Find the red folder.’*\nA faint *footstep* echoes down the hall — but you’re alone... right?",
+    "choices": [
+      {"text": "Search your desk 🗄️", "next": "search_desk"},
+      {"text": "Check the hallway 🚶", "next": "search_hallway"}
+    ]
+  },
+  "ignore_email": {
+    "text": "⚡ The lights flicker. Another message appears instantly: *‘You can’t hide from me.’*\nSomething moves on your monitor’s reflection — but nothing’s behind you.",
+    "choices": [
+      {"text": "Go check the email 📧", "next": "open_email"},
+      {"text": "Hide under your desk 🪑", "next": "hide_desk"}
+    ]
+  },
+  "search_desk": {
+    "text": "You open your drawer. A *red folder* slides forward on its own. Inside, a note reads:\n*‘When the clock strikes 10, you must choose your door.’* ⏰\nThe second hand ticks louder with every breath.",
+    "choices": [
+      {"text": "Head to the break room 🍵", "next": "break_room"},
+      {"text": "Try the exit door 🚪", "next": "exit_door"}
+    ]
+  },
+  "search_hallway": {
+    "text": "The hallway lights buzz overhead. A silhouette stands at the far end, motionless. When you blink — it’s gone.\nA door creaks open near the conference room.",
+    "choices": [
+      {"text": "Follow the sound 👤", "next": "conference_room"},
+      {"text": "Retreat to your desk 🖥️", "next": "search_desk"}
+    ]
+  },
+  "hide_desk": {
+    "text": "You crawl under your desk. Silence… then the printer starts printing a page by itself: *‘Stand up.’* 🖨️\nThe paper keeps sliding out — blank, blank, blank — until one shows your name.",
+    "choices": [
+      {"text": "Stand up 🧍", "next": "search_desk"},
+      {"text": "Stay hidden 🫣", "next": "stay_hidden"}
+    ]
+  },
+  "break_room": {
+    "text": "You enter the break room. The clock reads *9:59.* Three coffee cups sit in a row — one trembling slightly.\nA whisper brushes your ear: *‘Choose carefully.’*",
+    "choices": [
+      {"text": "Pick left cup 🟢", "next": "key_left"},
+      {"text": "Pick middle cup 🟡", "next": "key_middle"},
+      {"text": "Pick right cup 🔴", "next": "key_right"}
+    ]
+  },
+  "exit_door": {
+    "text": "You reach the exit. The glass reflects the office behind you — except the reflection isn’t moving.\nIt slowly smiles. 😳",
+    "choices": [
+      {"text": "Look for a key 🗝️", "next": "break_room"},
+      {"text": "Try another exit 🏃", "next": "other_exit"}
+    ]
+  },
+  "conference_room": {
+    "text": "The door creaks open. It’s dark. A chair slowly turns toward you — empty.\nThen the overhead projector flickers on by itself, showing a slide: *‘Wrong room.’*",
+    "choices": [
+      {"text": "Open the flickering drawer 🗄️", "next": "key_middle"},
+      {"text": "Leave quickly 🙅", "next": "other_exit"}
+    ]
+  },
+  "stay_hidden": {
+    "text": "From under the desk, you hear faint typing on your keyboard. A soft whisper follows:\n*‘Time’s up.’* The monitor glows with your own login — but the hands on the keyboard aren’t yours. ⏱️",
+    "choices": [
+      {"text": "Crawl toward the hallway 🐛", "next": "conference_room"},
+      {"text": "Peek at the desk 👀", "next": "search_desk"}
+    ]
+  },
+  "key_left": {
+    "text": "✅ The left cup hides a small brass key. The whisper fades. You sprint to the exit, unlock it, and feel the cool night air — free at last.\n…until your phone buzzes: *‘See you tomorrow, player one.’* 🎉",
+    "choices": []
+  },
+  "key_middle": {
+    "text": "❌ The middle cup rattles — empty. The lights flicker, then cut out.\nWhen they return, your reflection in the microwave is smiling back. And it doesn’t stop smiling. 😨",
+    "choices": []
+  },
+  "key_right": {
+    "text": "❌ The right cup contains only a candy — and a note beneath it: *‘Too sweet. Too slow.’*\nThe break room door locks behind you as the clock strikes 10. Tick. Tick. Silence. ⏰",
+    "choices": []
+  },
+  "other_exit": {
+    "text": "✅ You burst into the emergency stairwell. Freedom!\nYou laugh, catching your breath — until your office access card *slides under the stair door from the inside.* 🏃‍♂️💨",
+    "choices": []
+  }
+};
 
     // ---------- UI hooks ----------
     const textPanel = document.getElementById('textPanel');
