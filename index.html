@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>After Hours — The Vanishing Office</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0e0f12; --panel:#111214; --muted:#9aa0a6; --accent:#f1c40f;
+      --good:#27ae60; --bad:#e74c3c;
+      --glass: rgba(255,255,255,0.03);
+    }
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: radial-gradient(ellipse at 20% 10%, #111 0%, #08090b 40%, #030304 100%);
+      color: #e6eef6; display:flex; align-items:center; justify-content:center;
+      padding:20px;
+    }
+    .card{
+      width:820px; max-width:98vw; background:linear-gradient(180deg,var(--panel),#0b0c0e);
+      border-radius:12px; box-shadow: 0 8px 30px rgba(0,0,0,0.7); overflow:hidden; border:1px solid rgba(255,255,255,0.03);
+    }
+    header{padding:18px 22px; display:flex; align-items:center; gap:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
+    .logo{width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#2c3e50,#34495e); display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+    .title{font-size:18px;font-weight:600}
+    .subtitle{font-size:13px;color:var(--muted); margin-top:2px}
+    main{padding:22px; min-height:340px; display:flex; gap:18px}
+    .left{flex:1; display:flex; flex-direction:column; gap:12px}
+    .textPanel{background:var(--glass); border-radius:8px; padding:18px; min-height:180px; line-height:1.45; font-size:16px; white-space:pre-wrap; overflow:auto}
+    .controls{display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.03);
+      color:#e9eef6; padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer;
+      transition: transform .06s ease, box-shadow .06s;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn.choice{flex:1; min-width:160px}
+    .btn.primary{background:linear-gradient(180deg,#1f2933,#0f1720); box-shadow:0 6px 18px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.04)}
+    .meta{display:flex; gap:10px; align-items:center}
+    .dots{color:var(--muted); font-weight:700}
+    .footer{padding:12px 22px; display:flex; justify-content:space-between; align-items:center; gap:12px; background:linear-gradient(0deg, rgba(255,255,255,0.01), transparent)}
+    .small{font-size:13px;color:var(--muted)}
+    .flicker{
+      animation: flicker 0.35s linear 0s 3;
+    }
+    @keyframes flicker {
+      0%{filter:brightness(1)}
+      50%{filter:brightness(.35) contrast(1.5)}
+      100%{filter:brightness(1)}
+    }
+    .success { border-left:4px solid var(--good); }
+    .fail { border-left:4px solid var(--bad); }
+    .glow { box-shadow: 0 8px 30px rgba(241,196,15,0.08), inset 0 1px 0 rgba(255,255,255,0.02); }
+    .center{display:flex; align-items:center; justify-content:center; flex-direction:column; text-align:center}
+    .bigEmoji{font-size:64px; margin:6px 0}
+    .confetti{
+      position:absolute; inset:0; pointer-events:none; overflow:hidden;
+    }
+    /* responsive */
+    @media (max-width:720px){ .card{width:100%} main{flex-direction:column} .left{order:0} }
+  </style>
+</head>
+<body>
+  <div class="card" id="app">
+    <header>
+      <div class="logo">AH</div>
+      <div>
+        <div class="title">After Hours — The Vanishing Office</div>
+        <div class="subtitle">A short suspense interactive — click choices to play</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="meta small">Players: up to 6 · Duration: ~10 min</div>
+    </header>
+
+    <main>
+      <div class="left">
+        <div id="textPanel" class="textPanel"></div>
+
+        <div id="choices" class="controls"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <div class="small" id="sceneId">Scene: —</div>
+          <div class="small">Suspense mode: <label style="margin-left:6px"><input id="suspenseToggle" type="checkbox" checked> On</label></div>
+        </div>
+      </div>
+
+      <div style="width:260px; min-width:220px">
+        <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.02)">
+          <div style="font-weight:700;margin-bottom:8px">Status</div>
+          <div id="statusBox" class="small">Ready</div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div style="background:var(--glass); padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.02)">
+          <div style="font-weight:700;margin-bottom:8px">Controls</div>
+          <button id="startBtn" class="btn primary">Start Game</button>
+          <button id="restartBtn" class="btn" style="margin-left:8px">Restart</button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div style="background:transparent; color:var(--muted); font-size:13px; padding:12px">
+          Tip: Play as a group — vote on each choice. Click a choice to proceed.
+        </div>
+      </div>
+    </main>
+
+    <div class="footer small">
+      <div>Made for your office Halloween — no backend needed</div>
+      <div>Have fun & don’t stay past 10 PM 😉</div>
+    </div>
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+  <script>
+    // --------- Story data (from your JSON) ----------
+    const story = {
+      "start": {
+          "text": "👀 *6:59 PM.* Everyone has left. You’re about to shut down your PC when an email pops up:\\n*From:* unknown@officecorp.com\\n*Subject:* Do you want to play?",
+          "choices": [
+              {"text": "Open the email 📧", "next": "open_email"},
+              {"text": "Ignore it 🙈", "next": "ignore_email"}
+          ]
+      },
+      "open_email": {
+          "text": "📩 The message reads: ‘We know you stayed late. Let’s play a game. Find the red folder.’\\nYou hear faint footsteps...",
+          "choices": [
+              {"text": "Search your desk 🗄️", "next": "search_desk"},
+              {"text": "Check the hallway 🚶", "next": "search_hallway"}
+          ]
+      },
+      "ignore_email": {
+          "text": "⚡ The lights flicker. Another message arrives: ‘You can’t hide from me.’",
+          "choices": [
+              {"text": "Go check the email 📧", "next": "open_email"},
+              {"text": "Hide under your desk 🪑", "next": "hide_desk"}
+          ]
+      },
+      "search_desk": {
+          "text": "You find the red folder. It contains a note: *‘The clock strikes 10, or you won’t leave alive.’* ⏰",
+          "choices": [
+              {"text": "Head to the break room 🍵", "next": "break_room"},
+              {"text": "Try the exit door 🚪", "next": "exit_door"}
+          ]
+      },
+      "search_hallway": {
+          "text": "The hallway is empty, but the lights flicker. You see a shadow move past the conference room...",
+          "choices": [
+              {"text": "Follow the shadow 👤", "next": "conference_room"},
+              {"text": "Go back to desk 🖥️", "next": "search_desk"}
+          ]
+      },
+      "hide_desk": {
+          "text": "You crouch and hear typing above. The printer starts printing a single page: *‘Stand up.’* 🖨️",
+          "choices": [
+              {"text": "Stand up 🧍", "next": "search_desk"},
+              {"text": "Stay hidden 🫣", "next": "stay_hidden"}
+          ]
+      },
+      "break_room": {
+          "text": "On the counter: 3 cups. One has a key under it. ☕❓",
+          "choices": [
+              {"text": "Pick left cup 🟢", "next": "key_left"},
+              {"text": "Pick middle cup 🟡", "next": "key_middle"},
+              {"text": "Pick right cup 🔴", "next": "key_right"}
+          ]
+      },
+      "exit_door": {
+          "text": "The door is locked. Your reflection in the glass waves without you moving. 😳",
+          "choices": [
+              {"text": "Look for a key 🗝️", "next": "break_room"},
+              {"text": "Try another exit 🏃", "next": "other_exit"}
+          ]
+        },
+      "conference_room": {
+          "text": "Shadow was just a jacket hanging. Relief… until a drawer opens by itself. 😬",
+          "choices": [
+              {"text": "Open drawer 🗄️", "next": "key_middle"},
+              {"text": "Ignore it 🙅", "next": "other_exit"}
+          ]
+      },
+      "stay_hidden": {
+          "text": "You hear a whisper: *‘Time’s running out.’* ⏱️",
+          "choices": [
+              {"text": "Crawl to hallway 🐛", "next": "conference_room"},
+              {"text": "Peek at desk 👀", "next": "search_desk"}
+          ]
+      },
+      "key_left": {
+          "text": "✅ You found the key! You unlock the exit and leave safely. 🎉",
+          "choices": []
+      },
+      "key_middle": {
+          "text": "❌ Nothing inside. Lights flicker. Time seems frozen. 😨",
+          "choices": []
+      },
+      "key_right": {
+          "text": "❌ The cup has candy 🍬 but no key. Clock ticks closer to 10 PM...",
+          "choices": []
+      },
+      "other_exit": {
+          "text": "✅ You find an emergency stairwell and escape! 🏃‍♂️💨",
+          "choices": []
+      }
+    };
+
+    // ---------- UI hooks ----------
+    const textPanel = document.getElementById('textPanel');
+    const choicesEl = document.getElementById('choices');
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const sceneIdEl = document.getElementById('sceneId');
+    const statusBox = document.getElementById('statusBox');
+    const suspenseToggle = document.getElementById('suspenseToggle');
+    const confettiEl = document.getElementById('confetti');
+    let currentScene = null;
+    let typingTimer = null;
+
+    // ---------- Utilities ----------
+    function setStatus(t){
+      statusBox.textContent = t;
+    }
+
+    function clearConfetti(){
+      confettiEl.innerHTML = '';
+    }
+
+    function spawnConfetti(){
+      clearConfetti();
+      for(let i=0;i<40;i++){
+        const el = document.createElement('div');
+        el.style.position='absolute';
+        el.style.left= Math.random()*100 + '%';
+        el.style.top = Math.random()*-10 + '%';
+        const size = 6 + Math.random()*12;
+        el.style.width = size+'px';
+        el.style.height = size+'px';
+        el.style.borderRadius='2px';
+        el.style.background = ['#f39c12','#f1c40f','#e67e22','#f39c12'][Math.floor(Math.random()*4)];
+        el.style.opacity = Math.random()*0.9 + 0.3;
+        el.style.transform = `rotate(${Math.random()*360}deg)`;
+        el.style.transition = `transform 2.5s linear, top 2.5s linear, opacity 2.5s linear`;
+        confettiEl.appendChild(el);
+        requestAnimationFrame(()=>{
+          el.style.top = 100 + Math.random()*20 + '%';
+          el.style.transform = `translateY(30px) rotate(${Math.random()*720}deg)`;
+          el.style.opacity = 0;
+        });
+      }
+      setTimeout(clearConfetti, 2800);
+    }
+
+    // Simple typewriter with optional suspense dots
+    async function typeText(rawText){
+      const suspense = suspenseToggle.checked;
+      // convert escaped \n sequences into real newlines
+      const text = rawText.replace(/\\n/g, '\n');
+      textPanel.innerHTML = '';
+      const lines = text.split('\n');
+      for(let line of lines){
+        await typeLine(line + '\n', suspense);
+      }
+    }
+
+    function typeLine(line, suspense){
+      return new Promise(resolve=>{
+        const showTyping = suspense;
+        const container = document.createElement('div');
+        container.style.whiteSpace='pre-wrap';
+        textPanel.appendChild(container);
+
+        let i=0;
+        const speed = showTyping ? (18 + Math.floor(Math.random()*12)) : 2;
+        typingTimer = setInterval(()=>{
+          container.textContent += line[i] || '';
+          i++;
+          textPanel.scrollTop = textPanel.scrollHeight;
+          if(i>=line.length){
+            clearInterval(typingTimer);
+            // small pause after line
+            setTimeout(resolve, 320);
+          }
+        }, speed);
+      });
+    }
+
+    // render scene
+    async function renderScene(key){
+      currentScene = key;
+      sceneIdEl.textContent = `Scene: ${key}`;
+      setStatus('...thinking');
+      const scene = story[key];
+      choicesEl.innerHTML = '';
+      // small suspense flicker for certain tense scenes
+      if(suspenseToggle.checked && Math.random() < 0.18){
+        document.getElementById('app').classList.add('flicker');
+        setTimeout(()=>document.getElementById('app').classList.remove('flicker'), 400);
+      }
+
+      // type the content
+      await typeText(scene.text);
+
+      // final scene (no choices)
+      if(!scene.choices || scene.choices.length === 0){
+        setStatus('End of path');
+        // style container for success/fail
+        if(scene.text.includes('✅')){
+          textPanel.classList.add('success');
+          spawnConfetti();
+        }else if(scene.text.includes('❌')){
+          textPanel.classList.add('fail');
+        } else {
+          textPanel.classList.remove('success'); textPanel.classList.remove('fail');
+        }
+        // show "Restart" hint
+        const hint = document.createElement('div');
+        hint.style.marginTop='12px';
+        hint.style.color='var(--muted)';
+        hint.textContent = 'This path has ended — click Restart to play again.';
+        textPanel.appendChild(hint);
+        return;
+      }
+
+      // normal choices: show buttons
+      setStatus('Awaiting choice');
+      for(const c of scene.choices){
+        const b = document.createElement('button');
+        b.className = 'btn choice';
+        b.textContent = c.text;
+        b.onclick = () => choose(c.next, b);
+        choicesEl.appendChild(b);
+      }
+    }
+
+    function disableButtons(){
+      const all = choicesEl.querySelectorAll('button');
+      all.forEach(btn=>{
+        btn.disabled = true;
+        btn.style.opacity = 0.85;
+        btn.style.transform = 'none';
+      });
+    }
+
+    // on choice
+    async function choose(nextKey, buttonEl){
+      // visual feedback
+      disableButtons();
+      buttonEl.classList.add('glow');
+      setStatus('Choice selected...');
+      // short suspense delay
+      if(suspenseToggle.checked){
+        await new Promise(r=>setTimeout(r, 900 + Math.random()*700));
+      } else {
+        await new Promise(r=>setTimeout(r, 160));
+      }
+      // small dramatic effect for failures/ends
+      const nextScene = story[nextKey];
+      // clear any previous success/fail classes
+      textPanel.classList.remove('success'); textPanel.classList.remove('fail');
+
+      // render next
+      await renderScene(nextKey);
+    }
+
+    // start & restart
+    startBtn.addEventListener('click', ()=> {
+      startBtn.disabled = true;
+      restartBtn.disabled = false;
+      textPanel.classList.remove('success'); textPanel.classList.remove('fail');
+      renderScene('start');
+    });
+    restartBtn.addEventListener('click', ()=> {
+      startBtn.disabled = false;
+      restartBtn.disabled = true;
+      textPanel.innerHTML = '';
+      choicesEl.innerHTML = '';
+      setStatus('Ready');
+      sceneIdEl.textContent = 'Scene: —';
+      textPanel.classList.remove('success'); textPanel.classList.remove('fail');
+      clearConfetti();
+    });
+
+    // init
+    restartBtn.disabled = true;
+    setStatus('Ready');
+    textPanel.innerHTML = "Press 'Start Game' to begin the story.";
+  </script>
+</body>
+</html>
